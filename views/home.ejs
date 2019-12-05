@@ -1,0 +1,83 @@
+<% include ./partials/header %>
+
+      <!-- colors: #ce5072  #cc607d-->
+
+        <div class="row bg-light form-background">
+          
+            <div class="col-md-6 d-md-block ce5072 positioning">
+                
+            <img src="https://i.imgur.com/E8UBBB2.png" id="logo_c" class="col-10 col-md-8 d-inline-block">
+                <div class="m-auto my-0 col-8 col-md-6 py-2 e27290">
+                    <div class="mb-2" id="tab-model">
+                        <div class="tab-content my-auto" id="nav-tabContent">
+                          <div class="tab-pane fade show mt-3" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                              
+                            <!-- SignUP Form -->
+
+                            <form action="/signup" method="POST" class="m-auto">
+                                <div class="form-group">
+                                  <label for="signupUser" class="text-light">UserID</label>
+                                  <input name="username" type="text" class="form-control" id="signupUser" aria-describedby="userHelp" placeholder="Enter UserID" required>
+                                  <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+                                </div>
+                                <div class="form-group">
+                                  <label for="signupPassword" class="text-light">Password</label>
+                                  <input name="password" type="password" class="form-control" id="signupPassword" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                  <label for="signupReenterPassword" class="text-light">ReEnter Password</label>
+                                  <input name="rePassword" type="password" class="form-control" id="signupReenterPassword" placeholder="Password">
+                                </div>
+                                
+                              <button class="btn btn-outline-light" style="border-radius: 15%;" type="submit">SignUP</button>
+                            </form>
+
+                            <!-- SignUP Form End -->
+
+                          </div>
+                        </div>
+                      </div>
+                    <div>
+                      <div class="list-group" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action p-2" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Signup</a>
+                      </div>
+                    </div>
+                    
+                  </div>
+              
+            <ul class="p-1 mt-2 rounded-pill list-unstyled">
+            <li class="text-sm-center ml-2 mt-2 text-white">1. Plan the Project</li>
+            <li class="text-sm-center ml-2 mt-2 text-white">2. Have User Access</li>
+            <li class="text-sm-center ml-2 mt-2 text-white">3 Update Project</li> 
+            </ul>
+            </div>
+
+            <div class="col col-md-5 col-md-offset-6 m-md-auto mt-2 mb-2">
+
+            <!-- Login Form -->
+
+            <form action="/login" method="POST" class="col-8 m-auto">
+                <div class="form-group">
+                  <label for="loginUser">UserID</label>
+                  <input name="username" type="text" class="form-control" id="loginUser" aria-describedby="userHelp" placeholder="Enter UserID">
+                </div>
+                <div class="form-group">
+                  <label for="loginPassword">Password</label>
+                  <input name="password" type="password" class="form-control" id="loginPassword" placeholder="Password">
+                </div>
+                
+                
+                <button type="submit" class="btn col-12 ce5072 text-white font-weight-bold">Login</button>
+            </form>
+            
+            <!-- Login Form End -->
+
+            </div>
+
+
+        </div>
+        
+        <% include ./partials/footer %>
+
+
+

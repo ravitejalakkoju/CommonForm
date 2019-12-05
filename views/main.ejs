@@ -1,0 +1,165 @@
+<% include ./partials/header.ejs %>
+
+      <!-- colors: #ce5072  #cc607d -->
+      <div class="ce5072 p-1">
+        <nav class="navbar navbar-expand-lg navbar-light p-0 m-0 pb-2">
+      
+        <button class="navbar-toggler m-1" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <!-- <span class="navbar-toggler-icon"></span> -->
+          <i class="fas fa-bars text-white" style="font-size: x-large;"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="mb-0">
+          <button class="nav-link btn welcome-bg btn-sm rounded-pill my-1 mx-1 font-weight-bold p-2 text-white">Welcome <%= currentUser.username %></button>
+          </div>
+          <form action="/logout" method="GET" class="mb-0">
+          <button class="nav-link btn btn-light btn-sm rounded-pill my-1 mx-1 font-weight-bold" style="color: #ce5072">LogOut</button>
+          </form>
+        </div>
+        </nav>
+
+      <div class="container">
+        <div class="jumbotron bg-white">
+          
+          
+
+          <div class="dropdown my-2">
+            <a class="btn col-12 dropdown-toggle create-bg text-white border-0" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              AddProject <i class="fa fa-plus-circle"></i>
+            </a>
+
+            <div class="dropdown-menu col-sm-8" aria-labelledby="dropdownMenuLink">
+              <div class="m-0 p-sm-3 border-2 create-bg">
+                <div class="container rounded mx-auto p-2 georgia">
+                    <form action="/main" method="POST">
+                        <div class="form-group">
+                          <input name="projectTitle" type="text" class="form-control text-black" id="createProject" placeholder="Name of Project" required>
+                        </div>
+                        <div class="form-group p-1 text-dark height-max border rounded bg-white">
+                          <input name="users" type="checkbox" value="<%= currentUser.username %>" checked class="d-none">
+                          <% if(users !== null && users.length > 1){ %>
+                            <label for="exampleFormControlSelect1">Select Users</label><br>
+                            <% users.forEach( el => { %>
+                              <% if(el.username !== currentUser.username){ %>
+                                <!-- <div class="col-sm-6 float-right">
+                                  <label class="sr-only" for="inlineFormInputGroup">Username</label>
+                                  <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                      <div class="input-group-text">@</div>
+                                    </div>
+                                    <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Username">
+                                  </div>
+                                </div> -->
+                                <input name="users" type="checkbox" value="<%= el.username %>"> <%= el.username %><br>
+                              <% } %>
+                            <% }) %>
+                          <% } else { %>
+                            <label for="exampleFormControlSelect1" class="text-black-50">No Other Users present</label>
+                          <% } %>
+                        </div>
+                        <div class="form-group text-white">
+                          <label for="summary">Summary :</label>
+                          <textarea name="summary" class="form-control" id="summary" rows="3" required></textarea>
+                        </div>
+                        <div class="text-center">
+                        <input class="btn btn-light col-6" type="submit" value="Submit">
+                        </div>
+                      </form>
+                </div>
+                </div>
+            </div>
+          </div>
+
+            <select class="btn create-bg text-white border-0" id="projectSelect">
+              <% if(projects) { %>
+                <% if(projects.length > 0){ %>
+                  <option disabled selected class="bg-light">Select Project</option>
+                  <% projects.forEach( el => { %>
+                    <option class="bg-light text-dark" value="<%= el.title %>"><%= el.title %></option>
+                    <%= el %>
+                  <% }); %>
+                <% } %>
+              <% } %>
+            </select>
+
+          <% if(projects) { %>
+            <% if(projects.length > 0){ %>
+              <% projects.forEach( el => { %>
+                <div class="d-none" id="project<%= el.title %>">
+                    <div class="border-top mt-4 mb-2"></div>
+                    <ul class="nav nav-pills nav-fill my-2 p-0">
+                        <% el.users.forEach( user => { %>
+                          <% if(user !== el.creator.username){ %>
+                            <li class="nav-item mx-1">
+                              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"><%= user %></a>
+                            </li>
+                          <% } else { %>
+                            <li class="nav-item mx-1">
+                              <a class="nav-link activi text-white" href="#"><%= user %></a>
+                            </li>
+                          <% } %>
+                        <% }) %>
+                      </ul>
+                    <h1 class="mb-3 text-center"><%= el.title %></h1>
+                
+                    <p align="center"><%= el.summary %></p>
+          
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item">
+                        <form class="m-0" action="/main/tab" method="POST">
+                          <input name="action" value="<%= el._id %>" class="d-none">
+                          <button type="submit" class="nav-link text-ce5072 btn-light rounded mx-1 " id="addTab"><i class="fas fa-plus text-ce5072"></i></button>
+                        </form>
+                      </li>
+                      <% for(var i = 0 ; i < el.tabCount; i++){ %>
+                        <li class="nav-item">
+                          <a class="nav-link text-ce5072" id="tab<%= el.title %><%= i+1 %>-tab" data-toggle="tab" href="#tab<%= el.title %><%= i+1 %>" role="tab" aria-controls="tab<%= el.title %><%= i+1 %>" aria-selected="true">Tab<%= i+1 %></a>
+                        </li>
+                      <% } %>
+                    </ul>
+          
+                    <div class="tab-content" id="myTabContent">
+                      <% for(var i = 0 ; i < el.tabCount; i++){ %>
+                        <div class="tab-pane fade show" id="tab<%= el.title %><%= i+1 %>" role="tabpanel" aria-labelledby="tab<%= el.title %><%= i+1 %>-tab">
+                          <form action="/main/update" method="POST">
+                            <input name="action" value="<%= el._id %>" class="d-none">
+                            <input name="index" value="<%= i %>" class="d-none">
+                            <small id="emailHelp" class="mt-2 ml-2 mb-0 form-text text-muted"> <a href="#" data-toggle="tooltip" title="You can use html tags to include images, links, videos etc.."><i class="fas fa-info-circle text-info font-size"></i></a> Use "\n" for next para or line. </small>
+                              <textarea name="text" class="mx-2 my-1 col-12 height-min" value="Enter Details Here">
+                                  <%= el.text[i] %>
+                              </textarea>
+                              <button class="btn activi text-white btn-sm text-center mt-2 float-right rounded-pill" type="submit">Update</button>
+                          </form>
+                          <% const text = el.text[i] %>
+                          <p class="lead mt-4">Final Projected Data</p>
+                          <hr class="my-4">
+                          <p>
+                              <% if(text){ %>
+                                <%- text.replace(/\n/g, '</p><p>') %>
+                              <% } %>
+                          </p>
+                          
+                        </div>
+                      <% } %>
+                      
+                    </div>
+                </div>
+              <% }); %>
+            <% } %>
+          <% } %>
+
+          
+          
+
+        </div>
+      </div>
+
+      </div>
+        
+        
+<% include ./partials/footer.ejs %>
+
+
+
+

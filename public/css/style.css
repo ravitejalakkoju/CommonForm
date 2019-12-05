@@ -1,0 +1,119 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+
+.form-background{
+    background-image: url("https://i.imgur.com/dECsZD9.png");
+    background-repeat: no-repeat;
+    background-position: right;
+    background-size: contain;
+    background-blend-mode: lighten;
+}
+
+.e27290 {
+    background-color: #e27290;
+}
+
+.ce5072 {
+    background-color: #ce5072;
+}
+
+/* .e27290 {
+  background-color: #494949;
+}
+
+.ce5072 {
+  background-color: #000000;
+} */
+
+.green {
+  background-color: rgba(0, 0, 0, 0.062);
+}
+
+.positioning {
+    height: 100vh; text-align: center;
+}
+
+.alert {
+  padding: 10px;
+  color: rgb(255, 255, 255);
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.alert.error{
+  background-color: #f04c44;
+} 
+.alert.success{
+    background-color: rgb(67, 199, 67);
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+.activi {
+  background-color: #ce5072;
+  
+}
+
+.text-ce5072{
+  color: #ce5072;
+}
+
+/* .activi {
+  background-color: #000000;
+}
+
+.text-ce5072{
+  color: #000000;
+} */
+
+.height-min {
+  min-height: 50vh;
+}
+
+.height-max {
+  max-height: 30vh;
+  overflow-y: scroll;
+}
+
+.georgia {
+  font-family: cursive;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.create-bg {
+  background-image: linear-gradient(#ce5072a9,#ce5072),url('https://images.newscientist.com/wp-content/uploads/2018/04/03171618/galactic_lg.jpg');
+}
+
+.welcome-bg {
+  background-image: linear-gradient(#00000000,#00000000),url('https://images.newscientist.com/wp-content/uploads/2018/04/03171618/galactic_lg.jpg');
+}
+
+.user-bg {
+  background-image: linear-gradient(#722b3e4f,#ce507263),url('https://images.newscientist.com/wp-content/uploads/2018/04/03171618/galactic_lg.jpg');
+}
+
+.font-size{
+  font-size: 150%;
+}
+
+/* .create-bg {
+  background-image: linear-gradient(#b42b4f71,#ce5072),url('https://images.newscientist.com/wp-content/uploads/2018/04/03171618/galactic_lg.jpg');
+} */
