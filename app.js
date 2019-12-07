@@ -8,6 +8,8 @@ const methodOverride = require("method-override");
 const User = require("./models/user");
 const Project = require("./models/project");
 
+mongoose.Promise = global.Promise;
+
 const app = express();
 
 function seedDB(){
@@ -49,27 +51,7 @@ const isLoggedIn = (req, res, next) => {
     res.redirect("/");
 };
 
-let allUsers = null, projects = null;
 
-function findAllUsers() {
-    User.find({}, (err, foundUsers) => {
-        if(err) { 
-            console.log(err);
-        } else {
-            allUsers = foundUsers;
-        }
-    }).sort('username');
-};
-
-function findAllProjects(username) {
-    Project.find({users: { $all: [`${username}`] } }, (err, foundProjects) => {
-        if(err) { 
-            console.log(err);
-        } else {
-            projects = foundProjects;
-        }
-    });
-};
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -84,16 +66,41 @@ app.use((req, res, next) => {
     next();
 });
 
+
+
 // seedDB();
 
 app.get("/", (req, res) => {
     res.render("home");
 });
 
-app.get("/main", isLoggedIn, (req, res) => {
-    findAllUsers();
-    findAllProjects(req.user.username);
-    res.render("main",{users: allUsers, projects});
+
+
+app.get("/main", isLoggedIn, async (req, res) => {
+        let allUsers = null, projects = null;
+        try {
+            await User.find({}, async (err, foundUsers) => {
+                if(err) { 
+                    console.log(err);
+                } else {
+                    allUsers = foundUsers;
+                    try {
+                        await Project.find({users: { $all: [`${req.user.username}`] } }, async (err, foundProjects) => {
+                            if(err) { 
+                                console.log(err);
+                            } else {
+                                res.render("main", {users: allUsers, projects: foundProjects});
+                            }
+                        }).exec();
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            }).sort('username').exec();
+        } catch (error) {
+            console.log(error);
+        }
+    
 });
 
 app.post("/main", isLoggedIn,(req, res) => {
@@ -120,8 +127,6 @@ app.post("/main", isLoggedIn,(req, res) => {
         if(err){
             res.send(err.message);
         } else {
-            findAllUsers();
-            findAllProjects(req.user.username);
             req.flash("success", `Project ${title} succesfully created`);
             res.redirect("/main");
         }
@@ -134,8 +139,6 @@ app.post("/main/tab", isLoggedIn, async (req, res) => {
         doc.text.push(" ");
         doc.save();
       });
-      findAllProjects(req.user.username);
-      findAllUsers();
     res.redirect("/main");
 });
 
@@ -144,8 +147,6 @@ app.post("/main/update", isLoggedIn, async (req, res) => {
         doc.text.set(req.body.index, req.body.text);
         doc.save();
       });
-      findAllProjects(req.user.username);
-      findAllUsers();
       res.redirect("/main");
 });
 
@@ -154,8 +155,6 @@ app.post("/login",passport.authenticate("local",
     failureRedirect: "/",
     failureFlash: true
     }), (req, res) => { 
-    findAllProjects(req.user.username);
-    findAllUsers();
 });
 
 app.post("/signup", (req, res) => {
